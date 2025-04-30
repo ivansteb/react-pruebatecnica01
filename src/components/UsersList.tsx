@@ -7,7 +7,7 @@ interface Props {
 
 export function UsersList({ users, showColors }: Props) {
   return (
-    <table width="100%">
+    <table style={{ marginTop: "2em", width: "100%" }}>
       <thead>
         <tr>
           <th>Foto</th>
@@ -20,10 +20,11 @@ export function UsersList({ users, showColors }: Props) {
 
       <tbody>
         {users.map((user, index) => {
-            const style = 
+          const backgroundColor = index % 2 === 0 ? "#333" : "#555";
+          const color = showColors ? backgroundColor : "transparent";
 
           return (
-            <tr key={user.id.value}>
+            <tr key={index} style={{ backgroundColor: color }}>
               <td>
                 <img src={user.picture.thumbnail} alt={user.name.title} />
               </td>
