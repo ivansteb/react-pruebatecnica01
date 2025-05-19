@@ -82,6 +82,13 @@ export interface Name {
   last: string;
 }
 
+export enum SortBy {
+  NONE = "none",
+  NAME = "name",
+  LAST = "last",
+  COUNTRY = "country",
+}
+
 export interface Picture {
   large: string;
   medium: string;
