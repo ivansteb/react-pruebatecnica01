@@ -3,7 +3,7 @@ import "./App.css";
 import { UsersList } from "./components/UsersList";
 import { SortBy, type User } from "./types.d";
 
-const numberOfResults = 10; // luego cambiar a 100
+const numberOfResults = 20; // luego cambiar a 100
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -59,11 +59,19 @@ function App() {
   }, [users, filterCountry]);
 
   const sortedUsers = useMemo(() => {
-    return sorting === SortBy.COUNTRY
-      ? filteredUsers.toSorted((a, b) =>
-          a.location.country.localeCompare(b.location.country)
-        )
-      : filteredUsers;
+    if (sorting === SortBy.NONE) return filteredUsers;
+
+    // usar un objeto diccionario para mapear los valores de sorting a las propiedades de los usuarios
+    const compareProperties: Record<string, (user: User) => any> = {
+      [SortBy.COUNTRY]: (user) => user.location.country,
+      [SortBy.NAME]: (user) => user.name.first,
+      [SortBy.LAST]: (user) => user.name.last,
+    };
+
+    return filteredUsers.toSorted((a, b) => {
+      const extractProperty = compareProperties[sorting];
+      return extractProperty(a).localeCompare(extractProperty(b));
+    });
   }, [filteredUsers, sorting]);
 
   return (
