@@ -18,6 +18,11 @@ function App() {
     setSortByCountry((prevState) => !prevState);
   };
 
+  const handleDelete = (uuid: string) => {
+    const filteredUsers = users.filter((user) => user.login.uuid !== uuid);
+    setUsers(filteredUsers);
+  };
+
   useEffect(() => {
     fetch(`https://randomuser.me/api/?results=${numberOfResults}`)
       .then(async (response) => await response.json())
@@ -45,7 +50,11 @@ function App() {
         </button>
       </header>
       <main>
-        <UsersList showColors={showColors} users={sortedUsers} />
+        <UsersList
+          deleteUser={handleDelete}
+          showColors={showColors}
+          users={sortedUsers}
+        />
       </main>
     </div>
   );
