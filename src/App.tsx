@@ -29,19 +29,23 @@ function App() {
       });
   }, []);
 
-  const sortedUsers = users.sort((a, b) => {
-    return a.location.country.localeCompare(b.location.country);
-  });
+  const sortedUsers = sortByCountry
+    ? users.toSorted((a, b) => {
+        return a.location.country.localeCompare(b.location.country);
+      })
+    : users;
 
   return (
     <div className="App">
       <h1>Prueba técnica</h1>
       <header>
         <button onClick={toggleColors}>Colorear filas</button>
-        <button onClick={toggleSortByCountry}>Ordenar por país</button>
+        <button onClick={toggleSortByCountry}>
+          {sortByCountry ? "No ordenar por país" : "Ordenar por país"}
+        </button>
       </header>
       <main>
-        <UsersList showColors={showColors} users={users} />
+        <UsersList showColors={showColors} users={sortedUsers} />
       </main>
     </div>
   );
