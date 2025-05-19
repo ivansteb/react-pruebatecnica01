@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { UsersList } from "./components/UsersList";
 import { type User } from "./types.d";
@@ -10,12 +10,18 @@ function App() {
   const [showColors, setShowColors] = useState(false);
   const [sortByCountry, setSortByCountry] = useState(false);
 
+  const originalUsers = useRef<User[]>([]); // <- guardar valor que no cambia entre renders
+
   const toggleColors = () => {
     setShowColors(!showColors);
   };
 
   const toggleSortByCountry = () => {
     setSortByCountry((prevState) => !prevState);
+  };
+
+  const handleReset = () => {
+    setUsers(originalUsers.current);
   };
 
   const handleDelete = (uuid: string) => {
@@ -28,6 +34,7 @@ function App() {
       .then(async (response) => await response.json())
       .then((data) => {
         setUsers(data.results);
+        originalUsers.current = data.results;
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -48,6 +55,7 @@ function App() {
         <button onClick={toggleSortByCountry}>
           {sortByCountry ? "No ordenar por país" : "Ordenar por país"}
         </button>
+        <button onClick={handleReset}>Resetear estado</button>
       </header>
       <main>
         <UsersList
