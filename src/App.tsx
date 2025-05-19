@@ -62,7 +62,7 @@ function App() {
     if (sorting === SortBy.NONE) return filteredUsers;
 
     // usar un objeto diccionario para mapear los valores de sorting a las propiedades de los usuarios
-    const compareProperties: Record<string, (user: User) => any> = {
+    const compareProperties: Record<string, (user: User) => string> = {
       [SortBy.COUNTRY]: (user) => user.location.country,
       [SortBy.NAME]: (user) => user.name.first,
       [SortBy.LAST]: (user) => user.name.last,
